@@ -1,19 +1,20 @@
 buildscript {
-	repositories {
-		mavenCentral()
-		jcenter()
-		maven {
-			name = "forge"
-			url = "http://files.minecraftforge.net/maven"
-		}
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "https://maven.minecraftforge.net/"
+        }
 		maven {
 			name = "sonatype"
 			url = "https://oss.sonatype.org/content/repositories/snapshots/"
 		}
-	}
-	dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-	}
+    }
+    dependencies {
+        classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.1.+') {
+            changing = true
+        }
+    }
 }
 
 plugins {
@@ -30,11 +31,11 @@ version = mc_version + "-" + mod_version
 
 apply from: 'gradle/scripts/dependencies.gradle'
 apply from: 'gradle/scripts/artifacts.gradle'
-apply from: 'gradle/scripts/upload.gradle'
-apply from: 'gradle/scripts/documentation.gradle'
+//apply from: 'gradle/scripts/upload.gradle'
+//apply from: 'gradle/scripts/documentation.gradle'
 
 minecraft {
-	version = project.mc_version + "-" + project.forge_version + "-" + project.mc_version
+	version = project.mc_version + "-" + project.forge_version 
 	runDir = "run-${project.mc_version}"
 
 	replace '${mod_version}', project.mod_version
@@ -53,7 +54,7 @@ jar {
 
 	// Package all the org.squiddev dependencies into one file
 	from configurations.shade
-		.findAll { it.getAbsolutePath().contains("org.squiddev") }
+		.findAll { it.getAbsolutePath().contains("org.squiddev") || it.getAbsolutePath().contains("cctweaks-lua") }
 		.collect { it.isDirectory() ? it : zipTree(it) }
 
 
@@ -69,6 +70,10 @@ sourceSets {
 }
 
 processResources {
+	// Définir une stratégie pour gérer les doublons dans les ressources
+
+    duplicatesStrategy = 'warn' // Vous pouvez choisir parmi 'warn', 'exclude', 'fail', ou 'include'
+
 	// this will ensure that this task is redone when the versions change.
 	inputs.property "mod_version", project.mod_version
 	inputs.property "mc_version", project.mc_version
@@ -97,4 +102,9 @@ gradle.projectsEvaluated {
 	tasks.withType(JavaCompile) {
 		options.compilerArgs << "-Xlint"
 	}
+}
+
+task copyDependencies(type: Copy) {
+  from configurations.default
+  into 'dependencies'
 }

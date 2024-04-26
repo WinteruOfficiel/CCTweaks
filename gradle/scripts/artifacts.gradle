@@ -34,7 +34,7 @@ task devJar(type: Jar) {
 
 	// Package all the org.squiddev dependencies into one file
 	from configurations.shade
-		.findAll { it.getAbsolutePath().contains("org.squiddev") }
+		.findAll { it.getAbsolutePath().contains("org.squiddev") || it.getAbsolutePath().contains("cctweaks-lua") }
 		.collect { it.isDirectory() ? it : zipTree(it) }
 
 	classifier = 'dev'

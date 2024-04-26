@@ -2,48 +2,42 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 	jcenter()
 
 	maven {
 		name = "chickenbones"
 		url = "http://chickenbones.net/maven"
+		//allowInsecureProtocol = true
 	}
 
 	maven {
 		name = "squiddev"
 		url = "https://dl.bintray.com/squiddev/maven"
-	}
-
-	maven {
-		name "IC2"
-		url "http://maven.ic2.player.to"
+		//allowInsecureProtocol = true
 	}
 
 	maven {
 		name "OpenMods"
 		url "http://repo.openmods.info/artifactory/openmods"
+		//allowInsecureProtocol = true
 	}
 
-	ivy {
-		name = "ComputerCraft"
-		artifactPattern "http://addons-origin.cursecdn.com/files/2269/339/[module][revision](.[ext])"
-	}
+	//ivy {
+	//	name = "CoFHLib"
+	//	artifactPattern "http://addons-origin.cursecdn.com/files/2235/558/[module]-[revision](.[ext])"
+	//}
 
-	ivy {
-		name = "CoFHLib"
-		artifactPattern "http://addons-origin.cursecdn.com/files/2235/558/[module]-[revision](.[ext])"
-	}
+	//ivy {
+	//	name = "PortalGun"
+	//	artifactPattern "http://addons-origin.cursecdn.com/files/2266/997/[module]-[revision](.[ext])"
+	//}
 
-	ivy {
-		name = "PortalGun"
-		artifactPattern "http://addons-origin.cursecdn.com/files/2266/997/[module]-[revision](.[ext])"
-	}
-
-	ivy {
-		name = "IChunUtil"
-		artifactPattern "http://addons-origin.cursecdn.com/files/2233/5/[module]-[revision](.[ext])"
-	}
+	//ivy {
+	//	name = "IChunUtil"
+	//	artifactPattern "http://addons-origin.cursecdn.com/files/2233/5/[module]-[revision](.[ext])"
+	//}
 }
 
 configurations {
@@ -54,7 +48,8 @@ configurations {
 }
 
 dependencies {
-	compile "ComputerCraft:ComputerCraft:${project.cc_version}"
+	//compile "ComputerCraft:ComputerCraft:${project.cc_version}"
+	implementation files('libs/ComputerCraft1.75.jar')
 
 	compile "codechicken:ForgeMultipart:${project.mc_version}-1.2.0.345:dev"
 	compile "codechicken:CodeChickenLib:${project.mc_version}-1.1.3.127:dev"
@@ -63,26 +58,68 @@ dependencies {
 	packaged "com.austinv11.collectiveframework:CollectiveFramework:1.0.0-132:deobf"
 	packaged "com.austinv11.peripheralsplusplus:PeripheralsPlusPlus:1.3.6:deobf"
 
-	packaged "CoFHLib:CoFHLib:[${project.mc_version}]1.0.1-159-dev"
-	packaged "curseMods:PortalGun:4.0.0-beta-6"
-	packaged "curseMods:iChunUtil:4.2.2"
-	packaged "net.industrial-craft:industrialcraft-2:2.3.249-ex18:api"
+	implementation files('libs/CoFHLib-1.7.10.jar')
+
+	//packaged "CoFHLib:CoFHLib:[${project.mc_version}]1.0.1-159-dev"
+	//packaged "curseMods:PortalGun:4.0.0-beta-6"
+	implementation files('libs/PortalGun-4.0.0-beta-6.jar')
+	//packaged "curseMods:iChunUtil:4.2.2"
+	implementation files('libs/iChunUtil-4.2.2.jar')
+
+	//packaged "net.industrial-craft:industrialcraft-2:2.3.249-ex18:api"
+	implementation files('libs/industrialcraft-2-2.2.827-experimental.jar')
 	packaged "openperipheral:OpenPeripheralCore-API:3.2"
 
-	shade('org.squiddev:cctweaks-lua:1.0.13') {
-		// Different versions
-		exclude group: 'ComputerCraft'
-		exclude group: 'com.google.guava'
-		exclude group: 'net.minecraftforge'
-		exclude group: 'org.ow2.asm'
-		exclude module: 'ConfigGen'
-	}
+	//implementation files('libs/cctweaks-lua-1.0.10-complete.jar') // Assurez-vous de spécifier le bon chemin vers votre module local
+
+	shade(files('libs/cctweaks-lua-1.0.13-complete.jar')) 
 
 	shade('org.squiddev:Patcher:1.1.1.1') { exclude group: 'org.ow2.asm' }
 	packaged('org.squiddev:ConfigGen:1.2.4') { exclude group: 'net.minecraftforge' }
 
 	testCompile group: "junit", name: "junit", version: "4.12"
+	//testImplementation 'junit:junit:4.12'
 }
+// dependencies {
+//     // implementation 'ComputerCraft:ComputerCraft:${project.cc_version}'
+//     implementation files('libs/ComputerCraft1.75.jar')
+
+//     implementation 'codechicken:ForgeMultipart:1.7.10-1.2.0.345:dev'
+//     implementation 'codechicken:CodeChickenLib:1.7.10-1.1.3.127:dev'
+//     implementation 'codechicken:NotEnoughItems:1.7.10-1.0.3.78:dev'
+//     implementation 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev'
+//     implementation 'com.austinv11.collectiveframework:CollectiveFramework:1.0.0-132:deobf'
+//     implementation 'com.austinv11.peripheralsplusplus:PeripheralsPlusPlus:1.3.6:deobf'
+
+//     implementation files('libs/CoFHLib-1.7.10.jar')
+
+//     // implementation 'CoFHLib:CoFHLib:[1.7.10]1.0.1-159-dev'
+//     // implementation 'curseMods:PortalGun:4.0.0-beta-6'
+//     implementation files('libs/PortalGun-4.0.0-beta-6.jar')
+//     // implementation 'curseMods:iChunUtil:4.2.2'
+//     implementation files('libs/iChunUtil-4.2.2.jar')
+
+//     // implementation 'net.industrial-craft:industrialcraft-2:2.3.249-ex18:api'
+//     implementation files('libs/industrialcraft-2-2.2.827-experimental.jar')
+//     implementation 'openperipheral:OpenPeripheralCore-API:3.2'
+
+//     implementation files('libs/cctweaks-lua-1.0.10-complete.jar') // Assurez-vous de spécifier le bon chemin vers votre module local
+
+//     // shade('org.squiddev:cctweaks-lua:1.0.10') {
+//     //     // Different versions
+//     //     exclude group: 'ComputerCraft'
+//     //     exclude group: 'com.google.guava'
+//     //     exclude group: 'net.minecraftforge'
+//     //     exclude module: 'ConfigGen'
+//     // }
+
+//     shade('org.squiddev:Patcher:1.1.1.1') { exclude group: 'org.ow2.asm' }
+//     packaged('org.squiddev:ConfigGen:1.2.4') { exclude group: 'net.minecraftforge' }
+
+//     testImplementation 'junit:junit:4.12'
+// 	//testImplementation 'junit:junit:4.12'
+// }
+
 sourceSets.main.compileClasspath += configurations.packaged
 
 idea.module.scopes.PROVIDED.plus += [configurations.packaged]
