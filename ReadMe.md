@@ -1,4 +1,9 @@
 # CCTweaks [![Build Status](https://travis-ci.org/SquidDev-CC/CCTweaks.svg?branch=minecraft-1.7.10)](https://travis-ci.org/SquidDev-CC/CCTweaks)
+
+This fork aims to provide the websocket API to computercraft 1.75 (MC 1.7.10).
+Yes we are in 2024, I know I should update...
+
+----------------------------------------------------
 Miscellaneous changes for ComputerCraft
 
 **The 1.7.10 branch has been discontinued. I will release patches for major game-breaking bugs, but do not expect minor bugs to be fixed.**
